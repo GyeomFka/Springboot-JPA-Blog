@@ -4,12 +4,15 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor //전체생성자
 @Builder //빌더패턴 
 @Entity
+//@DynamicInsert (insert 시에 null  인 필드를 제외시켜준다 
 public class User {
 
 	@Id //Primary key
@@ -41,8 +45,9 @@ public class User {
 	@Column(nullable = false,length = 50)
 	private String email;
 	
-	@ColumnDefault("'user'")//홑따옴표 중요
-	private String role;//Enum을 쓰는게 좋다 why ? data의 domain(범위)을 만들어 줄 수 있다. ex유저의 권한설정? - Code값으로 관리하는게 편하다
+	//@ColumnDefault("'user'")
+	@Enumerated(EnumType.STRING)
+	private RoleType role;//Enum을 쓰는게 좋다 why ? data의 domain(범위)을 만들어 줄 수 있다. ex유저의 권한설정? - Code값으로 관리하는게 편하다
 	// 그러므로 제한된 문자열로 설정 해 두는것이 좋다.
 	
 	@CreationTimestamp //시간 자동 입력
